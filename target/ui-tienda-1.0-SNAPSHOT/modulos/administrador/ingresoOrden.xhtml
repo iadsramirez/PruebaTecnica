@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Ingreso Compra</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmPrincipal">
+            <p:growl id="mainGrowl" showDetail="true" sticky="true" /> 
+            <h:panelGrid columns="3">
+                <p:commandButton value="Crear" icon="ui-icon-circle-check"  action="#{ordenManagedBean.crear$Action()}" update="frmPrincipal"/>
+                <p:commandButton value="Regresar" icon=" ui-icon-circle-arrow-w"  action="/index?faces-redirect=true" />
+                <p:commandButton value="Cerrar Session" icon="ui-icon-circle-check"  action="#{logoutBean.logout()}" />
+
+            </h:panelGrid>
+
+            <p:spacer height="10"/>
+
+            <h:panelGrid rendered="#{ordenManagedBean.accion eq 1}">
+                <p:fieldset legend="Totales">
+                    <h:panelGrid columns="2" id="totalespnl">
+                        <h:outputText value="Sub Total:"  style="font-weight: bolder"/>
+                        <h:outputText value="#{ordenManagedBean.subTotal}" >
+                            <f:convertNumber pattern = "###,###.###" />
+                        </h:outputText>
+                        <h:outputText value="Total:"  style="font-weight: bolder" />
+                        <h:outputText value="#{ordenManagedBean.total}" >
+                            <f:convertNumber pattern = "###,###.###" />
+                        </h:outputText>
+                    </h:panelGrid>
+
+                </p:fieldset>
+
+                <p:fieldset legend="Crear Orden">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Fecha:" style="font-weight: bolder" />
+                        <h:outputText value="#{ordenManagedBean.orden.fecha}">
+
+                        </h:outputText>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Cliente:" />
+                        <p:commandLink value="Seleccione" action="#{ordenManagedBean.listarCliente()}" onclick="PF('dlgCliente').show()" update="frmPrincipal:tblCliente"  />
+                        <h:outputText style="font-weight: bolder" value="#{ordenManagedBean.clienteSeleccion.nombre}-#{ordenManagedBean.clienteSeleccion.apellido}" />
+                    </h:panelGrid>
+
+                </p:fieldset>
+
+                <p:fieldset legend="Detalle">
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Agregar" onclick="PF('dlgDetalle').show()" 
+                                         update="frmPrincipal:frmDetail"
+                                         />
+
+
+
+                        <p:commandButton value="Guardar" action="#{ordenManagedBean.realizarOperacion()}" 
+                                         update="frmPrincipal frmPrincipal:mainGrowl"
+                                         />
+                    </h:panelGrid>
+                    <h:panelGrid columns="1">
+                        <p:dataTable id="tblDetalleCon" var="detalleC" value="#{ordenManagedBean.listadoDetalleOrden}">
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{detalleC.producto.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{detalleC.cantidad}" />
+                            </p:column>
+
+                            <p:column headerText="Sub total">
+                                <h:outputText value="#{detalleC.subTotal}" >
+                                    <f:convertNumber pattern = "###,###.###" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Total">
+                                <h:outputText value="#{detalleC.total}" >
+                                    <f:convertNumber pattern = "###,###.###" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+
+
+                </p:fieldset>
+            </h:panelGrid>
+
+
+            <h:panelGrid columns="1" rendered="#{ordenManagedBean.accion eq 0}">
+                <p:fieldset legend="Listado de Ordenes">
+
+                    <p:dataTable var="orden" value="#{ordenManagedBean.listadoOrden}" rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,15">
+
+                        <f:facet name="header">
+                            Listado Ordenes
+                        </f:facet>
+
+                        <p:column headerText="Numero">
+                            <h:outputText value="#{orden.idOrden}" />
+                        </p:column>
+
+
+                        <p:column headerText="Fecha">
+                            <h:outputText value="#{orden.fecha}" />
+                        </p:column>
+
+                        <p:column headerText="Sub Total">
+                            <h:outputText value="#{orden.subTotal}" >
+                                <f:convertNumber pattern = "###,###.###" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Total">
+                            <h:outputText value="#{orden.total}" >
+                                <f:convertNumber pattern = "###,###.###" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Detalle" style="text-align: center">
+                            <p:commandButton icon="ui-icon-circle-check"  actionListener="#{ordenManagedBean.obtenerDetalleOrden()}" onclick="PF('detalleOrder').show();" update="frmPrincipal:tblDetalleProd frmPrincipal:pnl">
+                                <f:setPropertyActionListener target="#{ordenManagedBean.ordenSeleccion}" value="#{orden}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+                    </p:dataTable>
+                </p:fieldset>
+
+
+            </h:panelGrid>
+
+
+
+
+
+            <!--Dialogos -->
+
+            <p:dialog header="Cliente" widgetVar="dlgCliente" modal="true" height="300" width="500">
+
+                <p:dataTable id="tblCliente" var="cliente" value="#{ordenManagedBean.listadoCliente}" rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10,15"
+                             emptyMessage="No hay registros" filteredValue="#{ordenManagedBean.listadoClienteFiltered}"
+                             >
+                    <p:column filterBy="#{cliente.nombre}"  filterMatchMode="contains" headerText="Nombre">
+                        <h:outputText value="#{cliente.nombre}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.apellido}" headerText="Apellido" filterMatchMode="contains" >
+                        <h:outputText value="#{cliente.apellido}" />
+                    </p:column>
+
+                    <p:column headerText="Seleccion">
+                        <p:commandButton icon="ui-icon-circle-check" update="frmPrincipal" onclick="PF('dlgCliente').hide()">
+                            <f:setPropertyActionListener target="#{ordenManagedBean.clienteSeleccion}" value="#{cliente}" />
+                        </p:commandButton>
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:dialog> 
+
+
+
+
+
+
+
+
+            <p:dialog header="Detalle Orden" widgetVar="detalleOrder" modal="true" height="250" width="500">
+
+                <h:panelGrid id="pnl">
+                    <p:dataTable var="dt" 
+                                 id="tblDetalleProd"
+                                 value="#{ordenManagedBean.listadoDetOrden}" rows="5"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column headerText="Producto">
+                            <h:outputText value="#{dt.producto.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{dt.cantidad}" />
+                        </p:column>
+
+                        <p:column headerText="Sub Total">
+                            <h:outputText value="#{dt.subTotal}" />
+                        </p:column>
+
+                        <p:column headerText="Total">
+                            <h:outputText value="#{dt.total}" />
+                        </p:column>
+
+
+                    </p:dataTable>
+                </h:panelGrid>
+
+
+            </p:dialog> 
+
+
+
+
+
+
+            <p:dialog header="Detalle" widgetVar="dlgDetalle" modal="true" height="250" width="500">
+                <h:form id="frmDetail">
+                    <h:panelGrid columns="2" id="detail">
+                        <h:outputText value="Cantidad:"/>
+                        <p:inputNumber value="#{ordenManagedBean.detalleOrden.cantidad}" size="20" maxlength="20" />
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="3" id="detail2">
+                        <h:outputText value="Producto" style="font-weight: bolder"/>
+                        <p:commandLink value="Seleccione" update="frmPrincipal:tblProd" onclick="PF('dlgProducto').show()" action="#{ordenManagedBean.listarProd()}" />
+                        <h:outputText value="#{ordenManagedBean.detalleOrden.producto.nombre}" />
+                    </h:panelGrid>
+
+                    <p:commandButton value="Confirmar" action="#{ordenManagedBean.confirmar()}"  update="frmPrincipal:tblDetalleCon frmPrincipal:totalespnl frmPrincipal"/>
+                </h:form>
+
+            </p:dialog> 
+
+
+            <p:dialog header="Productos" widgetVar="dlgProducto" modal="true" height="300" width="500">
+
+                <p:dataTable id="tblProd" var="prod" value="#{ordenManagedBean.listadoProducto}" rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10,15"
+                             emptyMessage="No hay registros" filteredValue="#{ordenManagedBean.listadoProductoFiltered}"
+                             >
+                    <p:column filterBy="#{prod.nombre}"  filterMatchMode="contains" headerText="Nombre">
+                        <h:outputText value="#{prod.nombre}" />
+                    </p:column>
+                    <p:column filterBy="#{prod.descripcion}" headerText="Descripcion" filterMatchMode="contains" >
+                        <h:outputText value="#{prod.descripcion}" />
+                    </p:column>
+                    <p:column  headerText="Descripcion"  >
+                        <h:outputText value="#{prod.precio}" />
+                    </p:column>
+
+                    <p:column headerText="Seleccion">
+                        <p:commandButton action="#{ordenManagedBean.asignarProdDetalle()}" icon="ui-icon-circle-check" update="frmPrincipal:frmDetail:detail2" onclick="PF('dlgProducto').hide()">
+                            <f:setPropertyActionListener target="#{ordenManagedBean.productoSelec}" value="#{prod}" />
+                        </p:commandButton>
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:dialog> 
+
+
+
+
+        </h:form>
+
+    </h:body>
+</html>
+

@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Producto</title>
+    </h:head>
+    <h:body>
+
+
+
+        <h:form id="fmrPrincipal">
+
+            <p:growl id="mainGrowl" showDetail="true" sticky="true" /> 
+            <h:panelGrid columns="4">
+                <p:commandButton value="Crear" icon="ui-icon-circle-check"  action="#{productoManagedBean.crear$Action()}" update="fmrPrincipal"/>
+                <p:commandButton value="Listar" icon="ui-icon-circle-check" action="#{productoManagedBean.listar$Action()}" update="fmrPrincipal" />
+                <p:commandButton value="Regresar" icon="ui-icon-circle-check"  action="/index?faces-redirect=true" />
+                <p:commandButton value="Cerrar Session" icon="ui-icon-circle-check"  action="#{logoutBean.logout()}" />
+
+            </h:panelGrid>
+            <p:spacer height="10" />
+
+
+
+            <h:panelGrid rendered="#{productoManagedBean.accion eq 1 or productoManagedBean.accion eq 2}">
+                <p:fieldset legend="Ingreso de Datos">
+                    <h:panelGrid columns="2" id="panelC">
+                        <h:outputText value="Nombre:" style="font-weight: bolder;"/>
+                        <p:inputText value="#{productoManagedBean.producto.nombre}" />
+
+                        <h:outputText value="Descripcion:" style="font-weight: bolder;"/>
+                        <p:inputText value="#{productoManagedBean.producto.descripcion}" />
+
+
+                        <h:outputText value="precio:" style="font-weight: bolder;"/>
+                        <p:inputNumber value="#{productoManagedBean.producto.precio}" />
+
+                        <p:commandButton value="Guardar" update="fmrPrincipal:mainGrowl fmrPrincipal" actionListener="#{productoManagedBean.guardar()}"/>
+                    </h:panelGrid>
+
+                </p:fieldset>
+            </h:panelGrid>
+
+
+            <h:panelGrid columns="2" rendered="#{productoManagedBean.accion eq 0}">
+                <p:fieldset legend="Listado Producto">
+                    <p:dataTable id="tblProducto" var="prod" value="#{productoManagedBean.listadoProducto}" rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{prod.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Descripcion">
+                            <h:outputText value="#{prod.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{prod.precio}" >
+                                <f:convertNumber pattern = "###,###.###" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Seleccion" style="text-align: center">
+
+                            <p:commandButton icon="ui-icon-circle-check" action="#{productoManagedBean.editar$Action()}" update="fmrPrincipal"> 
+                                <f:setPropertyActionListener target="#{productoManagedBean.producto}" value="#{prod}" />
+                            </p:commandButton>
+                        </p:column>
+                        
+                        <p:column headerText="Cambiar Estado" style="text-align: center">
+
+                            <p:commandButton icon="ui-icon-circle-check" action="#{productoManagedBean.cambiarEstado()}" update="fmrPrincipal fmrPrincipal:mainGrowl"> 
+                                <f:setPropertyActionListener target="#{productoManagedBean.producto}" value="#{prod}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+                    </p:dataTable>
+
+                </p:fieldset>
+            </h:panelGrid>
+
+
+        </h:form>
+
+
+
+
+    </h:body>
+</html>
+

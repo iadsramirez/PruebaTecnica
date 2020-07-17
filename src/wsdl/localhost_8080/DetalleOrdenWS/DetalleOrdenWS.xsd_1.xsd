@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.2-b608 (trunk-7979; 2015-01-21T12:50:19+0000) JAXWS-RI/2.2.11-b150120.1832 JAXWS-API/2.2.12 JAXB-RI/2.2.12-b141219.1637 JAXB-API/2.2.13-b141020.1521 svn-revision#unknown. --><xs:schema xmlns:tns="http://controller.promerica.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://controller.promerica.com/">
+
+<xs:element name="Exception" type="tns:Exception"/>
+
+<xs:element name="buscarDetalleOrden" type="tns:buscarDetalleOrden"/>
+
+<xs:element name="buscarDetalleOrdenResponse" type="tns:buscarDetalleOrdenResponse"/>
+
+<xs:element name="guardarOrdenDetalle" type="tns:guardarOrdenDetalle"/>
+
+<xs:element name="guardarOrdenDetalleResponse" type="tns:guardarOrdenDetalleResponse"/>
+
+<xs:element name="listaDetalleOrden" type="tns:listaDetalleOrden"/>
+
+<xs:element name="listaDetalleOrdenResponse" type="tns:listaDetalleOrdenResponse"/>
+
+<xs:complexType name="listaDetalleOrden">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listaDetalleOrdenResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:detalleOrden" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="detalleOrden">
+<xs:sequence>
+<xs:element name="cantidad" type="xs:int" minOccurs="0"/>
+<xs:element name="idDetalleOrden" type="xs:int" minOccurs="0"/>
+<xs:element name="orden" type="tns:orden" minOccurs="0"/>
+<xs:element name="producto" type="tns:producto" minOccurs="0"/>
+<xs:element name="subTotal" type="xs:double" minOccurs="0"/>
+<xs:element name="total" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="orden">
+<xs:sequence>
+<xs:element name="cantidad" type="xs:int" minOccurs="0"/>
+<xs:element name="cliente" type="tns:cliente" minOccurs="0"/>
+<xs:element name="fecha" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="idOrden" type="xs:int" minOccurs="0"/>
+<xs:element name="subTotal" type="xs:double" minOccurs="0"/>
+<xs:element name="total" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cliente">
+<xs:sequence>
+<xs:element name="apellido" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="producto">
+<xs:sequence>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="precio" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Exception">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarOrdenDetalle">
+<xs:sequence>
+<xs:element name="detalle" type="tns:detalleOrden" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarOrdenDetalleResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarDetalleOrden">
+<xs:sequence>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarDetalleOrdenResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:detalleOrden" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

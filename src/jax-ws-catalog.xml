@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/DetalleOrdenWS/DetalleOrdenWS?WSDL" uri="wsdl/localhost_8080/DetalleOrdenWS/DetalleOrdenWS.wsdl"/>
+    <system systemId="http://localhost:8080/DetalleOrdenWS/DetalleOrdenWS?xsd=1" uri="wsdl/localhost_8080/DetalleOrdenWS/DetalleOrdenWS.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/ClienteWS/ClienteWS?WSDL" uri="wsdl/localhost_8080/ClienteWS/ClienteWS.wsdl"/>
+    <system systemId="http://localhost:8080/ClienteWS/ClienteWS?xsd=1" uri="wsdl/localhost_8080/ClienteWS/ClienteWS.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/OrderWS/OrderWS?WSDL" uri="wsdl/localhost_8080/OrderWS/OrderWS.wsdl"/>
+    <system systemId="http://localhost:8080/OrderWS/OrderWS?xsd=1" uri="wsdl/localhost_8080/OrderWS/OrderWS.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/ProductoWS/ProductoWS?WSDL" uri="wsdl/localhost_8080/ProductoWS/ProductoWS.wsdl"/>
+    <system systemId="http://localhost:8080/ProductoWS/ProductoWS?xsd=1" uri="wsdl/localhost_8080/ProductoWS/ProductoWS.xsd_1.xsd"/>
+</catalog>
